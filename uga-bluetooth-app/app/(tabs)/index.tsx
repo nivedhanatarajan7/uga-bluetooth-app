@@ -8,15 +8,15 @@ const manager = new BleManager();
 export default function App() {
   const [devices, setDevices] = useState<Device[]>([]);
 
-  // Request Bluetooth Permissions (Android Only)
+  // Request Bluetooth Permissions for Android
   const requestPermissions = async () => {
     await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
   };
 
-  // Scan for Bluetooth Devices
+  // Scanning for Bluetooth Devices
   const scanDevices = () => {
     requestPermissions();
-    setDevices([]); // Reset the list before scanning
+    setDevices([]);
 
     manager.startDeviceScan(null, null, (error, device) => {
       if (error) {
@@ -33,12 +33,13 @@ export default function App() {
       }
     });
 
-    // Stop scanning after 10 seconds
+    // Stop scanning after 10 seconds for testing purposes
     setTimeout(() => {
       manager.stopDeviceScan();
     }, 10000);
   };
 
+  // Test app
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text style={{ fontSize: 20, marginBottom: 20 }}>Bluetooth Scanner</Text>
