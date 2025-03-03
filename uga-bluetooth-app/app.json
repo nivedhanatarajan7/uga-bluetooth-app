@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "my-app",
+    "slug": "my-app",
+    "version": "1.0.0",
+    "android": {
+      "permissions": [
+        "BLUETOOTH",
+        "BLUETOOTH_ADMIN",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.nnatarajan.ugabluetoothapp"
+    },
+    "ios": {
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "This app requires Bluetooth to connect to devices."
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4ca4cc0b-c4e1-4494-9903-99890a1a7855"
+      }
+    }
+  }
+}
