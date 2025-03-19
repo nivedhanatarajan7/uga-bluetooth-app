@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Button } from 'react-native';
 import { BleManager, Device } from 'react-native-ble-plx';
 import base64 from 'react-native-base64';
 
@@ -93,16 +93,7 @@ export default function App() {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 20 }}>Bluetooth Temperature Sensor</Text>
       
-      <TouchableOpacity
-        onPress={scanDevices}
-        style={{
-          backgroundColor: '#007bff',
-          padding: 10,
-          borderRadius: 5,
-          marginBottom: 10,
-        }}>
-        <Text style={{ color: '#fff', fontSize: 16 }}>{scanning ? 'Scanning...' : 'Scan Devices'}</Text>
-      </TouchableOpacity>
+      <Button title="Scan for Devices" onPress={scanDevices} />
 
       <FlatList
         data={devices}
