@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Button } from 'react-native';
 import { BleManager, Device } from 'react-native-ble-plx';
 import base64 from 'react-native-base64';
+import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 
 const manager = new BleManager();
 const SERVICE_UUID = "12630000-cc25-497d-9854-9b6c02c77054";
@@ -64,30 +65,28 @@ export default function App() {
     }
   };
 
-  const getTemperature = async (device: Device) => {
+const getTemperature = async (device: Device) => {
     if (!tempN) {
-      try {
-        const tempCharacteristic = await device.readCharacteristicForService(SERVICE_UUID, TEMP_CHARACTERISTIC_UUID);
-        
-        if (tempCharacteristic?.value) {
-          console.log(tempCharacteristic.value)
-          const decodedBytes = base64.decode(tempCharacteristic.value);
-          console.log(decodedBytes);
+        try {
+            const tempCharacteristic = await device.readCharacteristicForService(SERVICE_UUID, TEMP_CHARACTERISTIC_UUID);
 
-          // Convert byte array to int
-          const uint8Array = new Uint8Array(decodedBytes.split('').map(c => c.charCodeAt(0)));
-          const temperature = (uint8Array[0] << 8) | uint8Array[1];
+            if (tempCharacteristic?.value) {
+              // Converts base 64 byte array into byte array
+              // atob converts a string of Base64 characters to bytes, converts each element to decimal value and makes it into an array of 4 ints
+              const tempval = Uint8Array.from(atob(tempCharacteristic.value), c => c.charCodeAt(0));
 
-          console.log("Temperature:", temperature);
-
-          setTemperature(temperature);
-          tempN = true;
+              const temperatureval = ((tempval[2] << 8) | tempval[1]) / 100;
+              console.log("Temperature:", temperatureval);
+              
+                setTemperature(temperatureval);
+                tempN = true;
+            }
+        } catch (error) {
+            console.error("Error reading temperature:", error);
         }
-      } catch (error) {
-        console.error("Error reading temperature:", error);
-      }
     }
-  };
+};
+
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
