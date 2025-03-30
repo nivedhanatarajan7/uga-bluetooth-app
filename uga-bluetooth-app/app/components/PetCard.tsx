@@ -5,7 +5,7 @@ const PetCard = ({ name, img }: any) => {
     <View style={styles.grid}>
       <View style={styles.left}>
         <Image
-          source={require("./pet.jpg")}
+          source={img || require("./pet.jpg")}
           style={styles.image}
         />
         <Text style={styles.name}>{name || "Sparky"}</Text>
@@ -26,6 +26,8 @@ const PetCard = ({ name, img }: any) => {
           accessibilityLabel="Check Conditions"
         />
       </View>
+
+      
     </View>
   );
 };
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   right: {
-    flex: 1,
+    flex: 2,
     justifyContent: "space-evenly", 
     gap: 10
   },
