@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Button } from 'react-native';
 import { BleManager, Device } from 'react-native-ble-plx';
 import base64 from 'react-native-base64';
@@ -66,7 +66,6 @@ export default function App() {
   };
 
 const getTemperature = async (device: Device) => {
-    if (!tempN) {
         try {
             const tempCharacteristic = await device.readCharacteristicForService(SERVICE_UUID, TEMP_CHARACTERISTIC_UUID);
 
@@ -84,9 +83,22 @@ const getTemperature = async (device: Device) => {
         } catch (error) {
             console.error("Error reading temperature:", error);
         }
-    }
+    
 };
 
+useEffect(() => {
+  let interval: NodeJS.Timeout | null = null;
+
+  if (device) {
+    interval = setInterval(() => {
+      getTemperature(device);
+    }, 1000);
+  }
+
+  return () => {
+    if (interval) clearInterval(interval);
+  };
+}, [device]);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
