@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "918476875177",
+    "project_id": "ugatemperatureapp",
+    "storage_bucket": "ugatemperatureapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918476875177:android:163e7e1a90ba6ece5cd0b8",
+        "android_client_info": {
+          "package_name": "com.nnatarajan.ugabluetoothapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFKseBFLxchG8Mg1wI-jK6EcOKNxD6rgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

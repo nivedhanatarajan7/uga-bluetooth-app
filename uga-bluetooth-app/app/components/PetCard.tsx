@@ -1,19 +1,23 @@
+import { useRouter } from "expo-router";
 import { Text, Button, Image, StyleSheet, View } from "react-native";
+const PetCard = ({ name, type, breed, img }: any) => {
+  const router = useRouter();
 
-const PetCard = ({ name, img }: any) => {
   return (
     <View style={styles.grid}>
       <View style={styles.left}>
-        <Image
-          source={img || require("./pet.jpg")}
-          style={styles.image}
-        />
-        <Text style={styles.name}>{name || "Sparky"}</Text>
+        <Image source={img} style={styles.image} />
+        <Text style={styles.name}>{name}</Text>
       </View>
 
       <View style={styles.right}>
+        <Text style={styles.name}>
+          {type}: {breed}
+        </Text>
         <Button
-          onPress={() => {}}
+          onPress={() => {
+            router.push("/Overview");
+          }}
           title="Alerts"
           color="#3c7962"
           accessibilityLabel="Check alerts"
@@ -26,8 +30,6 @@ const PetCard = ({ name, img }: any) => {
           accessibilityLabel="Check Conditions"
         />
       </View>
-
-      
     </View>
   );
 };
@@ -51,15 +53,15 @@ const styles = StyleSheet.create({
   },
   right: {
     flex: 2,
-    justifyContent: "space-evenly", 
-    gap: 10
+    justifyContent: "space-evenly",
+    gap: 10,
   },
   image: {
     width: 80,
     height: 80,
     borderRadius: 50,
     borderColor: "#3c7962",
-    borderWidth: 3
+    borderWidth: 3,
   },
   name: {
     fontSize: 16,
