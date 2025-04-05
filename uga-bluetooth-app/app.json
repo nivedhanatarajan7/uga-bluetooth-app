@@ -9,7 +9,9 @@
         "BLUETOOTH_ADMIN",
         "ACCESS_FINE_LOCATION"
       ],
-      "package": "com.nnatarajan.ugabluetoothapp"
+      "package": "com.nnatarajan.ugabluetoothapp",
+      "googleServicesFile": "./android/app/google-services.json"
+
     },
     "ios": {
       "infoPlist": {

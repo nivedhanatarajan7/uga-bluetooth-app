@@ -32,7 +32,9 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
-        <Stack.Screen name="Overview" options={{ headerShown: false }} />
+        <Stack.Screen name="PushNotificationScreen"/>
+
+        <Stack.Screen name="Overview" />
 
       </Stack>
       <StatusBar style="auto" />

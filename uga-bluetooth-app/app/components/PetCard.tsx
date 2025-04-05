@@ -16,7 +16,7 @@ const PetCard = ({ name, type, breed, img }: any) => {
         </Text>
         <Button
           onPress={() => {
-            router.push("/Overview");
+            router.push("/PushNotificationScreen");
           }}
           title="Alerts"
           color="#3c7962"
@@ -24,7 +24,8 @@ const PetCard = ({ name, type, breed, img }: any) => {
         />
 
         <Button
-          onPress={() => {}}
+          onPress={() => {            router.push("/Overview");
+          }}
           title="Check Conditions"
           color="#3c7962"
           accessibilityLabel="Check Conditions"
