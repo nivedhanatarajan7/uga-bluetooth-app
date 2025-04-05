@@ -1,0 +1,28 @@
+[debug] [2025-04-05T15:06:29.774Z] ----------------------------------------------------------------------
+[debug] [2025-04-05T15:06:29.777Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\nived\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-04-05T15:06:29.777Z] CLI Version:   14.1.0
+[debug] [2025-04-05T15:06:29.777Z] Platform:      win32
+[debug] [2025-04-05T15:06:29.777Z] Node Version:  v20.11.0
+[debug] [2025-04-05T15:06:29.777Z] Time:          Sat Apr 05 2025 11:06:29 GMT-0400 (Eastern Daylight Time)
+[debug] [2025-04-05T15:06:29.778Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-04-05T15:06:29.780Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2025-04-05T15:06:29.820Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-04-05T15:06:29.821Z] > authorizing via signed-in user (nivedhanatarajan7@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\GitHub\uga-bluetooth-app\uga-bluetooth-app
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+
+[debug] [2025-04-05T15:06:30.020Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2025-04-05T15:06:30.020Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
