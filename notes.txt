@@ -1,0 +1,3 @@
+npx expo run
+
+npx expo start 

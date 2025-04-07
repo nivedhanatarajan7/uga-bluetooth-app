@@ -1,14 +1,17 @@
 import React, { useState,useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Button } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, PermissionsAndroid, Platform, Alert, Button } from 'react-native';
 import { BleManager, Device } from 'react-native-ble-plx';
 import base64 from 'react-native-base64';
 import { Float } from 'react-native/Libraries/Types/CodegenTypes';
 import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
+
 const manager = new BleManager();
 const SERVICE_UUID = "12630000-cc25-497d-9854-9b6c02c77054";
 const TEMP_CHARACTERISTIC_UUID = "12630001-cc25-497d-9854-9b6c02c77054"; 
-const HUMID_CHARACTERISTIC_UUID = "12630002-cc25-497d-9854-9b6c02c77054"; 
+const HUMID_CHARACTERISTIC_UUID = "12630003-cc25-497d-9854-9b6c02c77054"; 
+
+
 export default function App() {
   const [devices, setDevices] = useState<Device[]>([]);
   const [device, setDevice] = useState<Device | null>(null);
@@ -28,6 +31,16 @@ export default function App() {
       ]);
     }
   };
+
+  const createTwoButtonAlert = () =>
+    Alert.alert('Alert Title', 'My Alert Msg', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
 
   // Scan for Bluetooth Devices
   const scanDevices = async () => {
@@ -73,7 +86,7 @@ export default function App() {
     try {
         // so
         const humidityCharacteristic = await device.readCharacteristicForService(SERVICE_UUID, HUMID_CHARACTERISTIC_UUID); //WTF DOES THIS DO // oh shit i figured it out. 
-        console.log(humidityCharacteristic); // Let me see them BYTES!
+        //Sconsole.lo(humidityCharacteristic); // Let me see them BYTES!
 
         if (humidityCharacteristic?.value) {
           // Converts base 64 byte array into byte array
@@ -132,6 +145,8 @@ useEffect(() => {
       <Text style={{ fontSize: 20, marginBottom: 20 }}>Bluetooth Temperature Sensor</Text>
       
       <Button title="Scan for Devices" onPress={scanDevices} />
+      <Button title={'2-Button Alert'} onPress={createTwoButtonAlert} />
+
 
       <FlatList
         data={devices}
