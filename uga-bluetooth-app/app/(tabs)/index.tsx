@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  StyleSheet,
   View,
   Text,
   FlatList,
@@ -14,6 +15,14 @@ import { BleManager, Device } from 'react-native-ble-plx';
 import base64 from 'react-native-base64';
 // Chart libraries
 import { LineChart } from 'react-native-chart-kit';
+import { Image } from 'react-native'; // ✅ CORRECT
+import PetImage from '../../assets/images/PetImage.png';
+import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import Svg, { Circle } from 'react-native-svg';
+
+
+
+
 
 const manager = new BleManager();
 const SERVICE_UUID = "12630000-cc25-497d-9854-9b6c02c77054";
@@ -25,7 +34,7 @@ export default function App() {
   const [device, setDevice] = useState<Device | null>(null);
   const [temperature, setTemperature] = useState<number | null>(null);
   const [humidity, setHumidity] = useState<number | null>(null);
-  
+
   // This array holds objects of shape { time, temp }
   // so you can track the actual time at which each reading was taken.
   const [temperatureHistory, setTemperatureHistory] = useState<{ time: string; temp: number }[]>([]);
@@ -150,21 +159,46 @@ export default function App() {
     If you have many readings, you might want to limit the label count or only
     label every N points to avoid clutter.
   */
-    const MAX_LABELS = 12;
-    const chartLabels = temperatureHistory.map(entry => entry.time);
-    const chartData   = temperatureHistory.map(entry => entry.temp);
-    
-    // Calculate how many points you have
-    const totalPoints = chartLabels.length;
-    
-    // Force the skip factor so that *only* up to 12 labels appear
-    // e.g. if you have 100 points, skipCount becomes ~8, giving ~12 labeled points.
-    const skipCount = Math.ceil(totalPoints / MAX_LABELS);
-    
-    // When skipCount is 1, that means totalPoints <= 12, so no skipping needed.
-    const prunedLabels = chartLabels.map((label, index) => (
-      index % skipCount === 0 ? label : ''  // Return empty string to skip
-    ));
+  const MAX_LABELS = 12;
+  const chartLabels = temperatureHistory.map(entry => entry.time);
+  const chartData = temperatureHistory.map(entry => entry.temp);
+
+  // Calculate how many points you have
+  const totalPoints = chartLabels.length;
+
+  // Force the skip factor so that *only* up to 12 labels appear
+  // e.g. if you have 100 points, skipCount becomes ~8, giving ~12 labeled points.
+  const skipCount = Math.ceil(totalPoints / MAX_LABELS);
+
+  // When skipCount is 1, that means totalPoints <= 12, so no skipping needed.
+  const prunedLabels = chartLabels.map((label, index) => (
+    index % skipCount === 0 ? label : ''  // Return empty string to skip
+  ));
+
+
+
+  const temp = temperature ?? 0;
+  const minTemp = 0;
+  const maxTemp = 40;
+  const percentage = Math.min(Math.max((temp - minTemp) / (maxTemp - minTemp), 0), 1);
+
+  // Circular ring props
+  const size = 200;
+  const strokeWidth = 12;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference * (1 - percentage);
+
+  const getTempColor = (temp: number) => {
+    if (temp <= 8) return '#0000FF';     // deep blue
+    if (temp <= 12) return '#3399FF';    // sky blue
+    if (temp <= 15) return '#00CCCC';    // teals
+    if (temp <= 20) return '#66FF66';    // light green
+    if (temp <= 27) return '#00CC00';    // green
+    if (temp <= 28) return '#FFFF00';    // yellow
+    if (temp <= 30) return '#FF8000';    // orange
+    return '#FF0000';                    // red
+  };
 
 
 
@@ -172,29 +206,69 @@ export default function App() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 20 }}>Bluetooth Temperature Sensor</Text>
-      
+
       {!device && (
         <>
-      <Button title="Scan for Devices" onPress={scanDevices} />
-      <FlatList
-        data={devices}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => connectToDevice(item)}
-            style={{
-              padding: 10,
-              backgroundColor: '#f0f0f0',
-              marginVertical: 5,
-              borderRadius: 5,
-              width: '100%',
-            }}>
-            <Text style={{ fontSize: 16, textAlign: 'center' }}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-      />
-      </>
+          <Button title="Scan for Devices" onPress={scanDevices} />
+          <FlatList
+            data={devices}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => connectToDevice(item)}
+                style={{
+                  padding: 10,
+                  backgroundColor: '#f0f0f0',
+                  marginVertical: 5,
+                  borderRadius: 5,
+                  width: '100%',
+                }}>
+                <Text style={{ fontSize: 16, textAlign: 'center' }}>{item.name}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </>
       )}
+      {device && (
+        <>
+          <View style={styles.container}>
+            <Svg width={size} height={size}>
+              <Circle
+                  stroke="#fff" // ✅ white border
+                  fill="none"   // ✅ no fill (transparent center)
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                strokeWidth={strokeWidth}
+              />
+              <Circle
+                stroke={getTempColor(temp)}
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                strokeWidth={strokeWidth}
+                strokeDasharray={`${circumference}, ${circumference}`}
+                strokeDashoffset={strokeDashoffset}
+                strokeLinecap="round"
+                rotation={-90}
+                originX={size / 2}
+                originY={size / 2}
+                fill="none"
+              />
+            </Svg>
+
+            {/* Image on top */}
+            <View style={styles.imageContainer}>
+              <Image source={PetImage} style={styles.image} />
+              <Text style={styles.tempText}>{temp.toFixed(1)}°C</Text>
+            </View>
+          </View>
+          <Text> Sparky</Text>
+          {temperature !== null && <Text>Temperature: {temperature}°C</Text>}
+
+        </>
+      )}
+
 
       {temperatureHistory.length > 1 && (
         <LineChart
@@ -224,10 +298,37 @@ export default function App() {
       )}
 
       {device && <Text>Connected to: {device.name}</Text>}
-      {temperature !== null && <Text>Temperature: {temperature}°C</Text>}
       {humidity !== null && <Text>Humidity: {humidity}%</Text>}
 
 
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  imageContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff', // ✅ Add this
+    borderRadius: 100,       // ✅ ensure it's still a circle
+  },
+  image: {
+    width: 160,
+    height: 160,
+    borderRadius: 80,
+  },
+  tempText: {
+    position: 'absolute',
+    bottom: 10,
+    fontSize: 20,
+    color: '#000',
+    fontWeight: 'bold',
+  },
+});
+
