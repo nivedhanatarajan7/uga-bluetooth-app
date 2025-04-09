@@ -173,8 +173,9 @@ export default function App() {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
       <Text style={{ fontSize: 20, marginBottom: 20 }}>Bluetooth Temperature Sensor</Text>
       
+      {!device && (
+        <>
       <Button title="Scan for Devices" onPress={scanDevices} />
-
       <FlatList
         data={devices}
         keyExtractor={(item) => item.id}
@@ -192,6 +193,8 @@ export default function App() {
           </TouchableOpacity>
         )}
       />
+      </>
+      )}
 
       {temperatureHistory.length > 1 && (
         <LineChart
