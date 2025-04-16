@@ -10,6 +10,7 @@ import {
   Alert,
   Button,
   Dimensions,
+  TextInput
 } from 'react-native';
 import { BleManager, Device } from 'react-native-ble-plx';
 import base64 from 'react-native-base64';
@@ -200,7 +201,18 @@ export default function App() {
     return '#FF0000';                    // red
   };
 
+  const [tempLimit, setTempLimit] = React.useState('')
 
+
+  useEffect(() => {
+    const limit = parseFloat(tempLimit);
+    if (temperature != null && tempLimit && !isNaN(limit)) {
+      if (temperature > limit) {
+
+        Alert.alert("🔥 SPARKY IS ON FIRE!!!!!! HES OVERHEATED GET THIS DAWG SOME SHADE")
+      }
+    }
+  })
 
 
   return (
@@ -266,8 +278,20 @@ export default function App() {
           <Text> Sparky</Text>
           {temperature !== null && <Text>Temperature: {temperature}°C</Text>}
 
+          <TextInput
+          onChangeText={(text) => {
+            const numericText = text.replace(/[^0-9]/g, '');
+            setTempLimit(numericText);
+          }}
+          value={tempLimit}
+          style={styles.input}
+          keyboardType = "numeric"
+        />
+
         </>
       )}
+
+
 
 
       {temperatureHistory.length > 1 && (
@@ -322,6 +346,12 @@ const styles = StyleSheet.create({
     width: 160,
     height: 160,
     borderRadius: 80,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
   },
   tempText: {
     position: 'absolute',
